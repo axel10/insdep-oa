@@ -1,0 +1,84 @@
+﻿@using Model
+@model dynamic
+
+<table id="actionDg" class="easyui-datagrid" title="权限列表" style="width: 100%; height: auto"
+       data-options="
+			iconCls: 'icon-edit',
+			singleSelect: true,
+@*			url: '/User/ShowUserAction',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit,
+			pagination:true*@
+		">
+    <thead>
+    <tr>
+        <th data-options="field:'ID'">编号</th>
+        <th data-options="field:'aName'">权限名称</th>
+        <th data-options="field:'url'">URL</th>
+        <th data-options="field:'method'">方式</th>
+        <th data-options="field:'remark'">备注</th>
+        <th data-options="field:'do'">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        List<ActionInfo> allActionInfos = ViewBag.AllActionInfos;
+        List<int> actionIdList = ViewBag.allActionId;
+        foreach (ActionInfo actionInfo in allActionInfos)
+        {
+            <tr>
+                <td>@actionInfo.ID</td>
+                <td>@actionInfo.ActionInfoName</td>
+                <td>@actionInfo.Url</td>
+                <td>@actionInfo.HttpMethod</td>
+                <td>@actionInfo.Remark</td>
+                <td>
+                
+                @if (actionIdList.Contains(actionInfo.ID))
+                {
+                    <span>有：</span> <input type="radio" name="state-@actionInfo.ID" value="true" data-aid="@actionInfo.ID" checked/><span>无：</span><input type="radio" name="state-@actionInfo.ID" value="false" data-aid="@actionInfo.ID"/><a href="#" class="easyui-linkbutton">清除</a>
+                }
+                else
+                {
+                    <span>有：</span> <input type="radio" name="state-@actionInfo.ID" value="true" data-aid="@actionInfo.ID"/><span>无：</span><input type="radio" name="state-@actionInfo.ID" value="false" data-aid="@actionInfo.ID"/><a href="#" class="easyui-linkbutton">清除</a>
+                }
+                
+                </td>
+                
+                
+                
+            </tr>
+        }
+    }
+    </tbody>
+
+
+</table>
+
+
+<script>
+    $(function() {
+        setTimeout(function() {
+                $(":radio").on('click',
+                    function() {
+                        console.log($(this).data("aid"));
+                        var aid = $(this).data("aid");
+                        var isPass = $(this).val();
+                        
+                        $.ajax({
+                            url: "/User/SetUserAction",
+                            data: {
+                                aid: aid,
+                                uid: @ViewBag.UserInfo.ID.ToString(),
+                                isPass: isPass
+                            },
+                            success: function(data) {
+                                console.log(data);
+                            }
+                        });
+                    });
+            },
+            1000)
+    })
+</script>

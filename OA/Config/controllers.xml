@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+  <object  type="OA.Controllers.LoginController, OA" singleton="false" >
+    <property name="UserInfoService" ref="UserInfoService" />
+  </object>
+  <object  type="OA.Controllers.MailController, OA" singleton="false" >
+    <property name="MailInfoService" ref="MailInfoService" />
+    <property name="UserInfoService" ref="UserInfoService" />
+  </object>
+  <object  type="OA.Controllers.RoleController, OA" singleton="false" >
+    <property name="RoleInfoService" ref="RoleInfoService" />
+    <property name="ActionInfoService" ref="ActionInfoService" />
+  </object>
+  <object  type="OA.Controllers.UserController, OA" singleton="false" >
+    <property name="UserInfoService" ref="UserInfoService" />
+    <property name="ActionInfoService" ref="ActionInfoService" />
+  </object>
+  <object  type="OA.Controllers.ActionController, OA" singleton="false" >
+    <property name="ActionInfoService" ref="ActionInfoService" />
+  </object>
+  <object  type="OA.Controllers.SearchController, OA" singleton="false" >
+    <property name="TbItemService" ref="TbItemService" />
+  </object>
+
+</objects>

@@ -1,0 +1,88 @@
+﻿@using Model
+@model dynamic
+
+
+<table id="roleDg" class="easyui-datagrid" title="权限列表：编辑@ViewBag.UserInfo.RoleName 的角色" style="width: 100%; height: auto"
+       data-options="
+			iconCls: 'icon-edit',
+			singleSelect: true,
+@*			url: '/User/ShowUserRole',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit,
+			pagination:true*@
+		">
+    <thead>
+    <tr>
+        <th data-options="field:'ID'">编号</th>
+        <th data-options="field:'aName'">角色名</th>
+        <th data-options="field:'url'">备注</th>
+        <th data-options="field:'method'">排序</th>
+        <th data-options="field:'remark'">修改时间</th>
+        <th data-options="field:'do'">是否拥有</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        List<RoleInfo> allRoleInfos = ViewBag.RoleInfoList;
+        List<int> roleIdList = ViewBag.roleIdList;
+        foreach (RoleInfo roleInfo in allRoleInfos)
+        {
+            <tr>
+                <td>@roleInfo.ID</td>
+                <td>@roleInfo.RoleName</td>
+                <td>@roleInfo.Remark</td>
+                <td>@roleInfo.Sort</td>
+                <td>@roleInfo.ModifiedOn</td>
+                <td>
+                    @if (roleIdList.Contains(roleInfo.ID))
+                    {
+                        <label>
+                            <input type="checkbox" onclick="editRole(this)" data-rid="@roleInfo.ID" checked="checked"/>
+                        </label>
+                    }
+                    else
+                    {
+                        <label>
+                            <input type="checkbox" onclick="editRole(this)" data-rid="@roleInfo.ID"/>
+                        </label>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+
+
+</table>
+
+
+<script>
+    function editRole(e) {
+        var isCheck = $(e).attr("checked");
+        var create;
+        if (isCheck) {
+            create = "false";
+        } else {
+            create = "true";
+        }
+        var rid = $(e).data("rid");
+        console.log(e)
+
+        console.log(rid)
+        console.log(create)
+
+        $.ajax({
+            url: "/Role/EditRole",
+            method: "post",
+            data: {
+                uid: @ViewBag.UserInfo.ID,
+                rid: rid,
+                isPass: create
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
+</script>

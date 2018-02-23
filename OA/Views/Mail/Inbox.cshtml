@@ -1,0 +1,122 @@
+﻿@using Model
+@model dynamic
+
+<link rel="stylesheet" href="/Content/inbox.css">
+
+
+<div class="easyui-panel" style="padding: 5px; padding-left: 25px">
+    <a>全选 <input type="checkbox"></a>
+    <a href="#" class="easyui-menubutton" data-options="menu:'#markList'">标记为</a>
+    <a href="#" class="easyui-linkbutton" data-options="plain:true" onclick="deleteMail()">删除</a>
+
+    <div style="width: 240px; display: inline-block; float: right; margin-top: 5px">
+        <div>
+            <span>搜索：</span><input class="easyui-textbox" id="searchQuery" data-options="iconCls:'icon-search',iconWidth:28,prompt:'Search small...'" style="width: 200px; height: 22px;">
+        </div>
+    </div>
+</div>
+
+<div id="markList" style="width: 100px;">
+    <div>已读邮件</div>
+    <div>未读邮件</div>
+    <div>待办邮件</div>
+</div>
+
+<!--
+<div id="selectList" style="width: 100px;">
+    <div>已读邮件</div>
+    <div>未读邮件</div>
+</div>
+-->
+
+<div class="mailList">
+    <div class="mail-head">
+    </div>
+    <ul>
+        @*        <li class="mailItem selected" >
+            <label class="demo--label">
+                <input class="demo--radio" type="checkbox" name="demo-checkbox3">
+                <span class="demo--checkbox demo--radioInput"></span>
+            </label>
+            <span class="sender">寄信人</span>
+            <span class="mailContentPr">内容预览</span>
+            <div class="mailRight">
+                <span class="mailDate">2017-1-1</span>
+                <span class="mailMark marked" ></span>
+            </div>
+        </li>*@
+
+        @{
+            foreach (MailInfo mailInfo in ViewBag.MailInfoList)
+            {
+                <li class="mailItem selected">
+                    <input type="checkbox" data-itemid="@mailInfo.Id" class="mailCheckbox"/>
+                    <span class="sender">@mailInfo.UserInfo.UName</span>
+                    <span class="mailContentPr">@mailInfo.Title</span>
+                    <div class="mailRight">
+                        <span class="mailDate">@mailInfo.CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                        @*                        <span class="mailMark marked" ></span>*@
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+
+<script>
+    initHead("收件箱");
+    $.parser.parse('#control');
+
+    var userId = $("#hiddenUserId").html();
+    $(function() {
+        $('#searchQuery').textbox({
+            inputEvents: $.extend({},
+                $.fn.textbox.defaults.inputEvents,
+                {
+                    keyup: function(event) {
+                        if (event.keyCode == 13) {
+                            initPage();
+                        }
+                    }
+
+                })
+        });
+    });
+
+
+    function deleteMail() {
+        var idList = [];
+        $(".mailCheckbox").each(function(i, item) {
+            if (item.checked) {
+                idList.push($(item).data("itemid"));
+            }
+        })
+        console.log(idList);
+        $.post("/mail/DeleteMails",
+            { idList: idList },
+            function(data) {
+                console.log(data);
+            });
+
+        initPage();
+    }
+
+    function initPage() {
+        
+        var query = $('#searchQuery').textbox('getValue');
+        $.get("/mail/Inbox",
+            { id: userId, query: query },
+            function(data) {
+                console.log(data);
+
+                $("#control").html(data);
+                $.parser.parse('#control');
+                $("#searchQuery").textbox("setValue", query);
+            });
+    }
+
+    function searchHandler(e) {
+        console.log(e);
+    }
+</script>

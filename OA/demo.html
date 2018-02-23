@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="Content/themes/insdep/easyui.css">
+    <script src="Scripts/js/vender/jquery-1.10.2.js"></script>
+
+    <script src="Scripts/js/vender/jquery.easyui-1.5.1.min.js"></script>
+</head>
+<body>
+
+<table class="easyui-datagrid" data-options="			
+            iconCls: 'icon-edit',
+			singleSelect: true,
+			toolbar: '#tb',
+			url: '/role/getdata',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit"
+       
+        >
+    <thead>
+    <tr>
+        <th data-options="field:'ID',width:80">编号</th>
+        <th data-options="field:'roleName',width:100,editor:'textbox'">角色名称</th>
+        <th data-options="field:'sort',width:80,align:'right',editor:'numberbox'">排序</th>
+        <th data-options="field:'remark',width:80,align:'right',editor:'numberbox'">备注</th>
+        <th data-options="field:'changeTime',width:250,editor:'textbox'">修改时间</th>
+    </tr>
+    </thead>
+
+</table>
+
+<script>
+    function onClickCell(index,field) {
+        
+    }
+</script>
+
+</body>
+</html>

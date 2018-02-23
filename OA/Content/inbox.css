@@ -1,0 +1,43 @@
+body {
+  background-color: #fff; }
+
+.mailList {
+  width: 100%;
+  margin-top: 19px;
+  position: relative; }
+  .mailList .mailItem {
+    position: relative;
+    height: 40px;
+    padding-top: 20px;
+    padding-left: 25px; }
+    .mailList .mailItem span {
+      display: inline-block; }
+    .mailList .mailItem.selected {
+      background-color: #f9f9f9; }
+    .mailList .mailItem .sender {
+      margin-left: 40px;
+      width: 90px; }
+    .mailList .mailItem .mailContentPr {
+      width: 280px; }
+    .mailList .mailItem .mailRight {
+      position: relative;
+      float: right;
+      padding-right: 30px;
+      top: 3px; }
+      .mailList .mailItem .mailRight .mailDate {
+        width: 80px; }
+      .mailList .mailItem .mailRight .mailMark {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: 20px;
+        -webkit-border-radius: 100%;
+        background-color: #ccc; }
+        .mailList .mailItem .mailRight .mailMark.marked {
+          background-color: orange; }
+
+/*# sourceMappingURL=inbox.css.map */

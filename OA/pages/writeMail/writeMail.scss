@@ -1,0 +1,22 @@
+.main-editor{
+    margin-top: 20px;
+    border-radius: 3px;
+    //border: 1px solid #ccc;
+    position: relative;
+    /*&>div{
+        margin-top: 10px;
+    }*/
+    .left-panel{
+        display: inline-block;
+        width: 60px;
+        line-height: 30px;
+        text-align: right;
+    }
+    .right-panel{
+        height: 90px;
+        display: inline-block;
+        width: 400px;
+        line-height: 25px;
+        vertical-align:top;
+    }
+}

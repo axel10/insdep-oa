@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3f83953988814384940053a4740aa05e" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="OAModel.ActionInfo" Width="1.5" PointX="0.5" PointY="1.375" />
+        <EntityTypeShape EntityType="OAModel.Department" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="OAModel.MailUserInfo" Width="1.5" PointX="9.625" PointY="4.375" />
+        <EntityTypeShape EntityType="OAModel.R_UserInfo_ActionInfo" Width="1.5" PointX="3" PointY="7.5" />
+        <EntityTypeShape EntityType="OAModel.RoleInfo" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="OAModel.tb_item" Width="1.5" PointX="5.75" PointY="4.75" />
+        <AssociationConnector Association="OAModel.FK_ActionInfoR_UserInfo_ActionInfo" />
+        <AssociationConnector Association="OAModel.DepartmentActionInfo" />
+        <AssociationConnector Association="OAModel.RoleInfoActionInfo" />
+        <EntityTypeShape EntityType="OAModel.MailInfo" Width="1.5" PointX="7.375" PointY="1" />
+        <AssociationConnector Association="OAModel.MailUserInfo_MailInfo_Id_fk" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

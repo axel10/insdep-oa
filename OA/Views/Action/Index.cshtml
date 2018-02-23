@@ -1,0 +1,185 @@
+﻿@model dynamic
+
+<div id="actionWindow" class="easyui-window" title="添加权限" style="width: 700px; height: 600px" closed="true">
+</div>
+
+<table id="dg" class="easyui-datagrid" title="Row Editing in DataGrid" style="width: 700px; height: auto"
+       data-options="
+			iconCls: 'icon-edit',
+			singleSelect: true,
+			toolbar: '#tb',
+			url: '/action/getdata',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit,
+			pagination:true
+		">
+    <thead>
+    <tr>
+        <th data-options="field:'ID',width:80">编号</th>
+        <th data-options="field:'ActionInfoName',width:100,editor:'textbox'">权限名</th>
+        <th data-options="field:'HttpMethod',width:80,editor:{
+            type:'combobox',
+            options:{
+                valueField: 'label',
+		        textField: 'value',
+		        data: [{
+			        label: 'get',
+			        value: 'get'
+		        },{
+			        label: 'post',
+			        value: 'post'
+		        }]
+            }
+        }
+        ">请求方式</th>
+        <th data-options="field:'Url',width:120,align:'right',editor:'textbox'">url</th>
+        <th data-options="field:'Remark',width:120,align:'right',editor:'textbox'">备注</th>
+        <th data-options="field:'changeTime',width:120">修改时间</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb" style="height: auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+       onclick="append()">
+        添加
+    </a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+       onclick="removeit()">
+        删除
+    </a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+       onclick="accept()">
+        保存
+    </a>
+
+    <!--    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>-->
+</div>
+
+<script type="text/javascript">
+    var editIndex = undefined;
+
+    function endEditing() {
+        if (editIndex == undefined) {
+            return true
+        }
+        if ($('#dg').datagrid('validateRow', editIndex)) {
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function onClickCell(index, field) {
+        if (editIndex !== index) {
+
+            /*            if (field === "changeTime") {
+                            return
+                        }*/
+
+            if (endEditing()) {
+                $('#dg').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+                var ed = $('#dg').datagrid('getEditor', { index: index, field: field });
+                // console.log(ed);
+                if (ed) {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function() {
+                        $('#dg').datagrid('selectRow', editIndex);
+                    },
+                    0);
+            }
+        }
+    }
+
+    function onEndEdit(index, row) {
+
+        console.log(row);
+
+        $.ajax({
+            url: "/action/EditAction",
+            method: "post",
+            data: row,
+            success: function(data) {
+                console.log(data);
+            }
+        })
+
+        // row.productname = $(ed.target).combobox('getText');
+    }
+
+    function append() {
+
+        $("#actionWindow").window('open');
+        $("#actionWindow").window("refresh", "/Action/AddAction");
+    }
+
+    function removeit() {
+        if (editIndex == undefined) {
+            return
+        }
+
+        var row = $("#dg").datagrid('getSelected');
+        console.log(row);
+        $('#dg').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+
+
+        $.ajax({
+            url: "/user/DeleteUser",
+            data: { id: row.ID },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+        editIndex = undefined;
+    }
+
+    function accept() {
+        if (endEditing()) {
+            $('#dg').datagrid('acceptChanges');
+        }
+    }
+
+
+    var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+    console.log(pager);
+    pager.pagination({
+        buttons: [
+            {
+                iconCls: 'icon-search',
+                handler: function() {
+                    alert('search');
+                }
+            }, {
+                iconCls: 'icon-add',
+                handler: function() {
+                    alert('add');
+                }
+            }, {
+                iconCls: 'icon-edit',
+                handler: function() {
+                    alert('edit');
+                }
+            }
+        ]
+    });
+
+
+</script>
+
+
+<script>
+    initHead("权限列表");
+
+
+    $.parser.parse('#control');
+
+</script>

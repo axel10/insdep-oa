@@ -1,0 +1,185 @@
+<link rel="stylesheet" href="/Content/roleControl.css">
+
+
+<table id="dg" class="easyui-datagrid" title="Row Editing in DataGrid" style="width:700px;height:auto"
+       data-options="
+			iconCls: 'icon-edit',
+			singleSelect: true,
+			toolbar: '#tb',
+			url: '/role/getdata',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit,
+			pagination:true
+		">
+    <thead>
+    <tr>
+        <th data-options="field:'ID',width:80">编号</th>
+        <th data-options="field:'roleName',width:100,editor:'textbox'">角色名称</th>
+        <th data-options="field:'sort',width:80,align:'right',editor:'numberbox'">排序</th>
+        <th data-options="field:'remark',width:80,align:'right',editor:'numberbox'">备注</th>
+        <th data-options="field:'changeTime',width:250">修改时间</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb" style="height:auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+       onclick="append()">添加</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+       onclick="removeit()">删除</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+       onclick="accept()">保存</a>
+    <!--    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>-->
+</div>
+
+<script type="text/javascript">
+    var editIndex = undefined;
+
+    function endEditing() {
+        if (editIndex == undefined) {
+            return true
+        }
+        if ($('#dg').datagrid('validateRow', editIndex)) {
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function onClickCell(index, field) {
+        if (editIndex != index) {
+
+/*            if (field === "changeTime") {
+                return
+            }*/
+
+            if (endEditing()) {
+                $('#dg').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+                var ed = $('#dg').datagrid('getEditor', {index: index, field: field});
+                // console.log(ed);
+                if (ed) {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function () {
+                    $('#dg').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+
+    function onEndEdit(index, row) {
+/*        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'roleName'
+        });
+        console.log(index);
+        console.log(ed);
+        var rows = $('#dg').datagrid('getChanges');*/
+        
+        // delete row.changeTime;
+        console.log(row);
+
+        $.ajax({
+            url:"/role/EditRole",
+            method:"post",
+            data:row,
+            success:function (data) {
+                console.log(data);
+            }
+        })
+
+        // row.productname = $(ed.target).combobox('getText');
+    }
+
+    function append() {
+        /*if (endEditing()) {
+            $('#dg').datagrid('appendRow', {changeTime: dateFtt( "yyyy-MM-dd", new Date)});
+            editIndex = $('#dg').datagrid('getRows').length - 1;
+            $('#dg').datagrid('selectRow', editIndex)
+                .datagrid('beginEdit', editIndex);
+        }*/
+        $.insdep.window({id:"new-role",href:"/pages/roleControl/newRole.html",title:"添加新角色",method:"get"})
+        // $.insdep.window({ id: "personal-set-window", href: "user.html", title: "修改资料" });
+
+    }
+
+    function removeit() {
+        if (editIndex == undefined) {
+            return
+        }
+
+        var row = $("#dg").datagrid('getSelected');
+        console.log(row);
+        $('#dg').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+        
+
+        $.ajax({
+            url: "/role/DeleteRole",
+            data:{id:row.ID},           
+            success: function (data) {
+                console.log(data);
+            }
+
+        });
+        
+        
+        editIndex = undefined;
+        
+    }
+
+    function accept() {
+        if (endEditing()) {
+            $('#dg').datagrid('acceptChanges');
+        }
+    }
+
+    /*    function reject(){
+            $('#dg').datagrid('rejectChanges');
+            editIndex = undefined;
+        }
+        function getChanges(){
+            var rows = $('#dg').datagrid('getChanges');
+            alert(rows.length+' rows are changed!');
+        }*/
+
+
+    var pager = $('#dg').datagrid().datagrid('getPager');   // get the pager of datagrid
+    console.log(pager);
+    pager.pagination({
+        buttons: [{
+            iconCls: 'icon-search',
+            handler: function () {
+                alert('search');
+            }
+        }, {
+            iconCls: 'icon-add',
+            handler: function () {
+                alert('add');
+            }
+        }, {
+            iconCls: 'icon-edit',
+            handler: function () {
+                alert('edit');
+            }
+        }]
+    });
+
+
+</script>
+
+
+<script>
+    initHead("角色列表");
+
+
+    $.parser.parse('#control');
+
+</script>

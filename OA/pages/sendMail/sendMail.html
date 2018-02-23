@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="/pages/sendMail/sendMail.css">
+
+
+<div class="easyui-panel" style="padding:5px; padding-left: 25px">
+    <a>全选 <input type="checkbox"></a>
+    <a href="#" class="easyui-menubutton" data-options="menu:'#markList'">标记为</a>
+    <a href="#" class="easyui-linkbutton" data-options="plain:true">删除</a>
+
+    <div style="width: 240px;  display: inline-block; float: right; margin-top: 5px">
+        <div>
+            <span>搜索：</span><input class="easyui-textbox" data-options="iconCls:'icon-search',iconWidth:28,prompt:'Search small...'" style="width:200px;height:22px;">
+        </div>
+    </div>
+</div>
+
+<div id="markList" style="width:100px;">
+    <div>已读邮件</div>
+    <div>未读邮件</div>
+    <div>待办邮件</div>
+</div>
+
+<!--
+<div id="selectList" style="width: 100px;">
+    <div>已读邮件</div>
+    <div>未读邮件</div>
+</div>
+-->
+
+<div class="mailList" >
+    <div class="mail-head">
+    </div>
+    <ul>
+        <li class="mailItem selected" >
+            <label class="demo--label">
+                <input class="demo--radio" type="checkbox" name="demo-checkbox3">
+                <span class="demo--checkbox demo--radioInput"></span>
+            </label>
+            <span class="sender">寄信人</span>
+            <span class="mailContentPr">内容预览</span>
+            <div class="mailRight">
+                <span class="mailDate">2017-1-1</span>
+                <span class="mailMark marked" ></span>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+<script>
+    initHead("收件箱");
+    $.parser.parse('#control');
+</script>

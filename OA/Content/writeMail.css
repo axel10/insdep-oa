@@ -1,0 +1,20 @@
+.main-editor {
+  margin-top: 20px;
+  border-radius: 3px;
+  position: relative;
+  /*&>div{
+      margin-top: 10px;
+  }*/ }
+  .main-editor .left-panel {
+    display: inline-block;
+    width: 60px;
+    line-height: 30px;
+    text-align: right; }
+  .main-editor .right-panel {
+    height: 90px;
+    display: inline-block;
+    width: 400px;
+    line-height: 25px;
+    vertical-align: top; }
+
+/*# sourceMappingURL=writeMail.css.map */

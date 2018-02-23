@@ -1,0 +1,65 @@
+﻿@model dynamic
+
+
+<div class="easyui-panel" title="New Topic" style="width:100%;padding:30px 160px;margin: 50px auto">
+    <form id="roleForm" method="post">
+        <div style="margin-bottom:20px">
+            用户名：<input class="easyui-textbox" name="UName" style="width:100%" data-options="required:true">
+        </div>
+        <div style="margin-bottom:20px">
+            密码：<input class="easyui-textbox" name="UPwd" style="width:100%" data-options="type:'text'">
+        </div>
+        <div style="margin-bottom:20px">
+            备注：<input class="easyui-textbox" name="Remark" style="width:100%" >
+        </div>
+    </form>
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+    </div>
+</div>
+<script>
+    
+    
+    $("#roleForm").form({
+        url:"/user/AddUser",
+        method:"post",
+        success:function (data) {
+            if(data==="ok"){
+                $.messager.show({
+                    title:'我的消息',
+                    msg:'添加成功。',
+                    timeout:2000,
+                    showType:'show',
+                    style:{
+                        right:'',
+                        top:document.body.scrollTop+document.documentElement.scrollTop,
+                        bottom:''
+                    }
+                });
+                $('#dg').datagrid('reload');
+            }else if (data === "用户名已存在") {
+                $.messager.show({
+                    title:'我的消息',
+                    msg:'用户名已存在。',
+                    timeout:2000,
+                    showType:'show',
+                    style:{
+                        right:'',
+                        top:document.body.scrollTop+document.documentElement.scrollTop,
+                        bottom:''
+                    }
+                });
+            }
+        }
+    })
+    
+    
+    function submitForm(){
+        $('#roleForm').form('submit');
+    }
+    function clearForm(){
+        $('#roleForm').form('clear');
+    }
+
+</script>

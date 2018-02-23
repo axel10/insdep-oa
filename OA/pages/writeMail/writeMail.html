@@ -1,0 +1,73 @@
+
+
+<link rel="stylesheet" href="/Content/writeMail.css">
+<script src="/Scripts/js/vender/wangEditor.min.js"></script>
+
+<div>
+    <a href="#" class="easyui-linkbutton" data-options="">存草稿</a>
+    <a href="#" class="easyui-linkbutton" data-options="">发送</a>
+</div>
+
+<div class="main-editor">
+<!--    <div><span>收件人：<input class="easyui-tagbox" value="Apple,Orange"  style="width:100%"></span></div>
+    <div style="margin-top: 10px"><span>标&nbsp;&nbsp;&nbsp;&nbsp;题：<input class="easyui-textbox"  style="width:300px"> </span></div>
+    <div style="margin-top: 10px">上传附件：<input class="easyui-filebox" labelposition="top" data-options="prompt:'Choose a file...'" style="width: 200px;display: inline-block;height: 25px;"></div>
+    <div id="wang-editor" style="margin-top: 10px"></div>
+    -->
+    <div class="left-panel">
+        <div>收件人：</div>
+        <div>标题：</div>
+        <div>上传附件：</div>
+    </div>
+    <form class="right-panel" method="post" enctype="multipart/form-data">
+        <div style="margin-bottom: 5px"><input name="shoujian" style="width: 300px; height: 25px;" class="easyui-tagbox" value="Apple,Orange" ></div>
+        <div style="margin-bottom: 5px"><input name="title" style="width: 300px; height: 25px;" class="easyui-textbox"  style="width:300px"></div>
+        <div><input name="file" style="width: 300px; height: 25px" class="easyui-filebox" labelposition="top" data-options="prompt:'Choose a file...'" ></div>
+    </form>
+
+    <div id="wang-editor" style="margin-top: 10px;margin-bottom: 15px"></div>
+
+    <div class="submit-group">
+        <a href="#" id="saveDraft" class="easyui-linkbutton" data-options="">存草稿</a>
+        <a href="#" id="send" class="easyui-linkbutton" data-options="">发送</a>
+    </div>
+</div>
+
+<script>
+    initHead("写邮件");
+    $.parser.parse("#control");
+
+    var E = window.wangEditor;
+    var editor = new E('#wang-editor');
+    editor.create();
+
+
+    $("#saveDraft").on("click",function () {
+
+        var formdata = new FormData($(".right-panel").get(0));
+
+        formdata.append("content",editor.txt.html());
+
+        $.ajax({
+            type:'post',
+            url:"/mail/SaveDraft",
+            data:formdata,
+            processData:false,
+            contentType: false,
+            cache:false,
+            success:function (data) {
+                console.log(formdata);
+            },
+            error:function () {
+                console.log(formdata);
+            }
+        })
+
+    })
+
+
+</script>
+<!--
+<script>
+    alert(1)
+</script>-->

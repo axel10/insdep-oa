@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://mat1.gtimg.com/libs/jquery/1.12.0/jquery.js"></script>
+    <link rel="stylesheet" href="./themes/icon.css">
+    <link rel="stylesheet" href="./themes/default/easyui.css">
+    <script src="./jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
+</head>
+<body>
+
+<body class="easyui-layout">
+<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region</div>
+<div data-options="region:'west',split:true,title:'West'" style="width:150px;padding:10px;"><div class="easyui-accordion" data-options="border:false,fit:true">
+    <div title="公共信息">
+        <ul class="easyui-datalist" data-options="border:false">
+            <li>企业文化</li>
+            <li>公文</li>
+            <li>新闻公告</li>
+            <li>重大信息</li>
+        </ul>
+    </div>
+    <div title="个人事务">
+        <ul class="easyui-datalist" data-options="border:false,fit:true">
+            <li>内部邮件</li>
+            <li>我的日志</li>
+            <li>我的提醒</li>
+        </ul>
+    </div>
+    <div title="权限控制">
+        <ul class="easyui-datalist" data-options="border:false,fit:true">
+            <li ><a href="#" id="auth">显示权限</a></li>
+        </ul>
+    </div>
+    <div title="通讯录"></div>
+    <div title="流程中心">
+        <ul class="easyui-datalist" data-options="border:false,fit:true">
+            <li>启动流程</li>
+            <li>待办流程</li>
+            <li>我发起的流程</li>
+        </ul>
+    </div>
+    <div title="文档中心"></div>
+    <div title="个人设置">
+        <ul class="easyui-datalist" data-options="border:false,fit:true">
+            <li>修改密码</li>
+        </ul>
+    </div>
+
+</div></div>
+<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>
+<div data-options="region:'south',border:false" style="height:50px;background:#A9FACD;padding:10px;">south region</div>
+<div data-options="region:'center',title:'Center'"></div>
+
+</body>
+
+
+</html>

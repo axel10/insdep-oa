@@ -1,0 +1,90 @@
+﻿@using Model
+@model dynamic
+
+
+<table id="actionDg" class="easyui-datagrid" title="权限列表：编辑@ViewBag.RoleInfo.RoleName 的权限" style="width: 100%; height: auto"
+       data-options="
+			iconCls: 'icon-edit',
+			singleSelect: true,
+@*			url: '/User/ShowUserAction',
+			method: 'get',
+			onClickCell: onClickCell,
+			onEndEdit: onEndEdit,
+			pagination:true*@
+		">
+    <thead>
+    <tr>
+        <th data-options="field:'ID'">编号</th>
+        <th data-options="field:'aName'">权限名称</th>
+        <th data-options="field:'url'">URL</th>
+        <th data-options="field:'method'">方式</th>
+        <th data-options="field:'remark'">备注</th>
+        <th data-options="field:'do'">是否拥有</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        RoleInfo roleInfo = ViewBag.RoleInfo;
+        List<ActionInfo> allActionInfos = ViewBag.actionInfoList;
+        List<int> actionIdList = ViewBag.roleActionIdList;
+        foreach (ActionInfo actionInfo in allActionInfos)
+        {
+            <tr>
+                <td>@actionInfo.ID</td>
+                <td>@actionInfo.ActionInfoName</td>
+                <td>@actionInfo.Url</td>
+                <td>@actionInfo.HttpMethod</td>
+                <td>@actionInfo.Remark</td>
+                <td>
+                    @if (actionIdList.Contains(actionInfo.ID))
+                    {
+                        <label>
+                            <input type="checkbox" onclick="editAction(this)" data-aid="@actionInfo.ID" checked="checked"/>
+                        </label>
+                    }
+                    else
+                    {
+                        <label>
+                            <input type="checkbox" onclick="editAction(this)" data-aid="@actionInfo.ID"/>
+                        </label>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+
+
+</table>
+
+
+<script>
+    function editAction(e) {
+        var isCheck = $(e).attr("checked");
+        var create;
+        if (isCheck) {
+            create = "false";
+        } else {
+            create = "true";
+        }
+        var aid = $(e).data("aid");
+        console.log(e)
+
+        console.log(aid)
+        console.log(create)
+                    
+        $.ajax({
+            url: "/Role/EditAction",
+            method: "post",
+            data: {
+                rid: @roleInfo.ID,
+                aid: aid,
+                isPass: create
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
+    </script>
